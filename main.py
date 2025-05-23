@@ -23,12 +23,10 @@ app.add_middleware(
 def retrieve_context(query: str) -> str:
     """
     Retrieve relevant context from the vector database.
-
     Args:
         query: User's question
-
     Returns:
-        Relevant context as a string.
+        Relevant context as a string
     """
     try:
         embeddings = OpenAIEmbeddings()
@@ -43,13 +41,11 @@ def retrieve_context(query: str) -> str:
 def query_openai_with_context(query: str, context: str) -> Dict[str, Any]:
     """
     Send a query to OpenAI API with retrieved context.
-
     Args:
         query: User's question
         context: Retrieved context from vector database
-
     Returns:
-        OpenAI API response.
+        OpenAI API response
     """
     import openai
     api_key = os.environ.get('OPENAI_API_KEY')
@@ -72,9 +68,8 @@ def query_openai_with_context(query: str, context: str) -> Dict[str, Any]:
 def get_default_context() -> str:
     """
     Get default context about Qudus.
-
     Returns:
-        Default context as a string.
+        Default context as a string
     """
     return (
         "Qudus Abolade is an AI Engineer with expertise in developing production-grade language and vision systems.\n"
@@ -102,8 +97,4 @@ async def chat(request: Request) -> JSONResponse:
         return JSONResponse(content=response)
     except Exception as e:
         logging.error(f"Error processing request: {str(e)}")
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("portfolio_chat.main:app", host="0.0.0.0", port=4342, reload=True)
+        return JSONResponse(status_code=500, content={"error": str(e)}) 
