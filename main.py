@@ -23,10 +23,12 @@ app.add_middleware(
 def retrieve_context(query: str) -> str:
     """
     Retrieve relevant context from the vector database.
+
     Args:
         query: User's question
+
     Returns:
-        Relevant context as a string
+        Relevant context as a string.
     """
     try:
         embeddings = OpenAIEmbeddings()
@@ -41,11 +43,13 @@ def retrieve_context(query: str) -> str:
 def query_openai_with_context(query: str, context: str) -> Dict[str, Any]:
     """
     Send a query to OpenAI API with retrieved context.
+
     Args:
         query: User's question
         context: Retrieved context from vector database
+
     Returns:
-        OpenAI API response
+        OpenAI API response.
     """
     import openai
     api_key = os.environ.get('OPENAI_API_KEY')
@@ -55,7 +59,7 @@ def query_openai_with_context(query: str, context: str) -> Dict[str, Any]:
     system_message = f"""You are a helpful assistant for Qudus Abolade, an ML/AI Engineer. \
     Answer questions about Qudus based on the following information:\n\n{context}\n\nIf the information to answer the question is not in the context provided, use this general information:\n- Qudus is an AI Engineer with expertise in developing production-grade language and vision systems\n- Specializes in Retrieval Augmented Generation (RAG), multilingual NLP, and computer vision\n- Has worked at Curacel, engineering intelligent systems for healthcare, customer service, and insurance automation\n- Technical expertise includes LLMs, computer vision, and full-stack AI development\n- Is a 2024 Nigeria Higher Education Foundation (NHEF) Scholar\n- Has 2+ years of experience in the field\n\nKeep answers concise, professional, and accurate. If you don't know the answer to a question, say you don't have that specific information about Qudus rather than making something up."""
     response = openai.chat.completions.create(
-        model='gpt-3.5-turbo',
+        model='gpt-4.1-mini-2025-04-14',
         messages=[
             {"role": "system", "content": system_message},
             {"role": "user", "content": query}
@@ -68,8 +72,9 @@ def query_openai_with_context(query: str, context: str) -> Dict[str, Any]:
 def get_default_context() -> str:
     """
     Get default context about Qudus.
+
     Returns:
-        Default context as a string
+        Default context as a string.
     """
     return (
         "Qudus Abolade is an AI Engineer with expertise in developing production-grade language and vision systems.\n"
@@ -97,4 +102,8 @@ async def chat(request: Request) -> JSONResponse:
         return JSONResponse(content=response)
     except Exception as e:
         logging.error(f"Error processing request: {str(e)}")
-        return JSONResponse(status_code=500, content={"error": str(e)}) 
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("portfolio_chat.main:app", host="0.0.0.0", port=4342, reload=True)
