@@ -1,0 +1,33 @@
+Qudus Abolade
+ML/AI Engineer
+
+About:
+Passionate ML/AI Engineer with expertise in developing production-grade language and vision systems. Specializing in Retrieval Augmented Generation (RAG), multilingual NLP, and computer vision. Committed to creating AI solutions that solve real-world problems.
+
+Experience:
+- AI Engineer at Curacel (2024 - Present)
+  Developing intelligent systems for healthcare, customer service, and insurance automation
+  - Built end-to-end RAG systems for document processing and information retrieval
+  - Implemented computer vision solutions for automated claims processing
+  - Developed multilingual NLP models for customer support
+
+Education:
+- Nigeria Higher Education Foundation (NHEF) Scholar, 2024
+- B.Sc. Computer Science, University of Lagos
+
+Skills:
+- Machine Learning & Deep Learning
+- Natural Language Processing
+- Computer Vision
+- Retrieval Augmented Generation (RAG)
+- Python, SQL, JavaScript, R
+- TensorFlow, PyTorch, Hugging Face
+- LangChain, LlamaIndex
+- Docker, Kubernetes
+- AWS, GCP, Azure
+
+Projects:
+- Developed a multilingual RAG system for document processing in multiple languages
+- Created a computer vision system for automated medical image analysis
+- Built a conversational AI assistant for customer service automation
+- Implemented a recommendation system for personalized content delivery
