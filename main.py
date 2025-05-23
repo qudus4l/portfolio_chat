@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Request, Response
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, Any
 import os
 import json
@@ -9,12 +10,15 @@ import logging
 
 app = FastAPI()
 
-CORS_ORIGIN = os.environ.get("PORTFOLIO_DOMAIN", "*")
-CORS_HEADERS = {
-    "Access-Control-Allow-Origin": CORS_ORIGIN,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type"
-}
+# Set allowed origins for CORS
+CORS_ORIGIN = os.environ.get("PORTFOLIO_DOMAIN", "https://qudus4l.live")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[CORS_ORIGIN],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 def retrieve_context(query: str) -> str:
     """
@@ -77,13 +81,6 @@ def get_default_context() -> str:
         "His skills include Python, SQL, JavaScript, R, TensorFlow, PyTorch, and more."
     )
 
-@app.options("/api/chat")
-async def options_chat() -> Response:
-    """
-    Respond to OPTIONS requests for CORS preflight.
-    """
-    return Response(status_code=204, headers=CORS_HEADERS)
-
 @app.post("/api/chat")
 async def chat(request: Request) -> JSONResponse:
     """
@@ -94,10 +91,10 @@ async def chat(request: Request) -> JSONResponse:
         body = await request.json()
         query = body.get('query', '')
         if not query:
-            return JSONResponse(status_code=400, content={"error": "Query parameter is required"}, headers=CORS_HEADERS)
+            return JSONResponse(status_code=400, content={"error": "Query parameter is required"})
         context_info = retrieve_context(query)
         response = query_openai_with_context(query, context_info)
-        return JSONResponse(content=response, headers=CORS_HEADERS)
+        return JSONResponse(content=response)
     except Exception as e:
         logging.error(f"Error processing request: {str(e)}")
-        return JSONResponse(status_code=500, content={"error": str(e)}, headers=CORS_HEADERS) 
+        return JSONResponse(status_code=500, content={"error": str(e)}) 
