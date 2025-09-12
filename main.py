@@ -12,21 +12,43 @@ app = FastAPI()
 
 # Set allowed origins for CORS
 PORTFOLIO_DOMAIN = os.environ.get("PORTFOLIO_DOMAIN", "http://www.qudus4l.tech")
-# Support multiple domains and both http/https
+
+# Comprehensive CORS origins to support all variations
 allowed_origins = [
+    # Portfolio domain variations
+    "http://www.qudus4l.tech",
+    "https://www.qudus4l.tech", 
+    "http://qudus4l.tech",
+    "https://qudus4l.tech",
+    
+    # Environment variable domain (if different)
     PORTFOLIO_DOMAIN,
-    PORTFOLIO_DOMAIN.replace("http://", "https://"),  # Support both protocols
-    "http://localhost:3000",  # Local development
-    "http://127.0.0.1:3000",  # Local development
+    PORTFOLIO_DOMAIN.replace("http://", "https://") if PORTFOLIO_DOMAIN.startswith("http://") else PORTFOLIO_DOMAIN,
+    PORTFOLIO_DOMAIN.replace("https://", "http://") if PORTFOLIO_DOMAIN.startswith("https://") else PORTFOLIO_DOMAIN,
+    
+    # Local development
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
+
+# Remove duplicates and None values
+allowed_origins = list(set(filter(None, allowed_origins)))
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"]
 )
+
+# Log CORS configuration for debugging
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.info(f"CORS allowed origins: {allowed_origins}")
 
 def retrieve_context(query: str) -> str:
     """
@@ -96,6 +118,13 @@ async def health_check() -> Dict[str, str]:
     Returns a simple status message.
     """
     return {"status": "healthy", "message": "Qudus Portfolio Chatbot API is running"}
+
+@app.options("/api/chat")
+async def chat_options():
+    """
+    Handle preflight OPTIONS request for CORS.
+    """
+    return {"message": "OK"}
 
 @app.post("/api/chat")
 async def chat(request: Request) -> JSONResponse:

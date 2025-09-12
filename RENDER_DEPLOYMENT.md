@@ -41,6 +41,8 @@ Make sure your repository has these files (already created):
      OPENAI_API_KEY=your_openai_api_key_here
      PORTFOLIO_DOMAIN=https://www.qudus4l.tech
      ```
+   
+   **Note**: The API automatically supports both HTTP and HTTPS versions of your domain, so CORS should work regardless of the protocol.
 
 5. **Deploy**
    - Click "Create Web Service"
