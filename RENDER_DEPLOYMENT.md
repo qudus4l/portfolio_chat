@@ -39,7 +39,7 @@ Make sure your repository has these files (already created):
    - Add these variables:
      ```
      OPENAI_API_KEY=your_openai_api_key_here
-     PORTFOLIO_DOMAIN=https://qudus4l.tech
+     PORTFOLIO_DOMAIN=https://www.qudus4l.tech
      ```
 
 5. **Deploy**

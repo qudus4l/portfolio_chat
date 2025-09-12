@@ -3,6 +3,10 @@ import os
 import json
 import requests
 import glob
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 from langchain_community.document_loaders import (
     WebBaseLoader, 
     PDFMinerLoader, 
@@ -26,15 +30,26 @@ def ingest_data() -> None:
     print("Starting data ingestion...")
     documents = []
     
-    # 1. Load portfolio website
-    print("Loading portfolio website...")
-    portfolio_loader = WebBaseLoader("https://qudus4l.github.io")
+    # 1. Load portfolio website comprehensively
+    print("Loading portfolio website with comprehensive scraping...")
     try:
-        portfolio_docs = portfolio_loader.load()
+        from scrape_portfolio import scrape_portfolio_website
+        portfolio_docs = scrape_portfolio_website("http://www.qudus4l.tech")
         documents.extend(portfolio_docs)
-        print(f"Loaded {len(portfolio_docs)} documents from portfolio website")
+        print(f"Loaded {len(portfolio_docs)} documents from comprehensive portfolio scraping")
+        print("  - Main page sections")
+        print("  - All project detail pages") 
+        print("  - All work experience detail pages")
     except Exception as e:
-        print(f"Error loading portfolio website: {str(e)}")
+        print(f"Error with comprehensive portfolio scraping: {str(e)}")
+        print("Falling back to basic web scraping...")
+        try:
+            portfolio_loader = WebBaseLoader("https://qudus4l.github.io")
+            portfolio_docs = portfolio_loader.load()
+            documents.extend(portfolio_docs)
+            print(f"Loaded {len(portfolio_docs)} documents from basic portfolio scraping")
+        except Exception as e2:
+            print(f"Error with basic portfolio scraping: {str(e2)}")
     
     # 2. Load all PDF files in data directory
     print("Loading PDF files from data directory...")

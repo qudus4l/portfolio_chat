@@ -11,7 +11,7 @@ import logging
 app = FastAPI()
 
 # Set allowed origins for CORS
-PORTFOLIO_DOMAIN = os.environ.get("PORTFOLIO_DOMAIN", "http://qudus4l.tech")
+PORTFOLIO_DOMAIN = os.environ.get("PORTFOLIO_DOMAIN", "http://www.qudus4l.tech")
 # Support multiple domains and both http/https
 allowed_origins = [
     PORTFOLIO_DOMAIN,
