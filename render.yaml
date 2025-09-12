@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: qudus-portfolio-chat
+    runtime: python3
+    buildCommand: "./build.sh"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: OPENAI_API_KEY
+        sync: false  # Set this in Render dashboard
+      - key: PORTFOLIO_DOMAIN
+        sync: false  # Set this in Render dashboard
+    healthCheckPath: /

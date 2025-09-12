@@ -11,10 +11,18 @@ import logging
 app = FastAPI()
 
 # Set allowed origins for CORS
-CORS_ORIGIN = os.environ.get("PORTFOLIO_DOMAIN", "https://qudus4l.live")
+PORTFOLIO_DOMAIN = os.environ.get("PORTFOLIO_DOMAIN", "http://qudus4l.tech")
+# Support multiple domains and both http/https
+allowed_origins = [
+    PORTFOLIO_DOMAIN,
+    PORTFOLIO_DOMAIN.replace("http://", "https://"),  # Support both protocols
+    "http://localhost:3000",  # Local development
+    "http://127.0.0.1:3000",  # Local development
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[CORS_ORIGIN],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -80,6 +88,14 @@ def get_default_context() -> str:
         "He has 2+ years of experience in the field.\n"
         "His skills include Python, SQL, JavaScript, R, TensorFlow, PyTorch, and more."
     )
+
+@app.get("/")
+async def health_check() -> Dict[str, str]:
+    """
+    Health check endpoint for Render.
+    Returns a simple status message.
+    """
+    return {"status": "healthy", "message": "Qudus Portfolio Chatbot API is running"}
 
 @app.post("/api/chat")
 async def chat(request: Request) -> JSONResponse:
