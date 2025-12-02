@@ -180,9 +180,8 @@ Keep all responses focused on Qudus while being charming about redirections. If 
     messages.append({"role": "user", "content": query})
     
     response = openai.chat.completions.create(
-        model='gpt-5-nano-2025-08-07',
+        model='gpt-4.1-nano',
         messages=messages
-        # Note: gpt-5-nano only supports default temperature of 1.0
     )
     return {"answer": response.choices[0].message.content}
 
