@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup, Tag
 from urllib.parse import urljoin, urlparse
 import time
 import logging
-from langchain.schema import Document
+from langchain_core.documents import Document
 import re
 
 # Configure logging
